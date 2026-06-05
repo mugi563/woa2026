@@ -288,12 +288,14 @@ const STAGES = [
 const STAGE_ALIAS = {main:"faster", nacken:"wackinger", crusher:"headbangers", stage:"faster"};
 const normStage = s => STAGE_ALIAS[s] || s;
 
-let favs = JSON.parse(localStorage.getItem('woa26_favs')||'[]');
+let favs = JSON.parse(localStorage.getItem('woa26_favs')||'{}');
 let alpha='all', query='', sortM='az', onlyHL=false;
 
-const save  = () => localStorage.setItem('woa26_favs', JSON.stringify(favs));
-const isFav = n  => favs.includes(n);
-const tog   = n  => { if(isFav(n)) favs=favs.filter(f=>f!==n); else favs.push(n); save(); renderAll(); };
+const FAV_LEVELS = {1:{label:'Muss ich sehen',icon:'🔥',color:'#ff4444'},2:{label:'Interessiert mich',icon:'⭐',color:'#ffaa00'},3:{label:'Lückenfüller',icon:'📌',color:'#4499ff'}};
+const save   = () => localStorage.setItem('woa26_favs', JSON.stringify(favs));
+const getFav = n  => favs[n] || 0;
+const isFav  = n  => getFav(n) > 0;
+const tog    = n  => { const cur = getFav(n); const next = (cur + 1) % 4; if(next === 0) delete favs[n]; else favs[n] = next; save(); renderAll(); };
 const m2t   = m  => String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
 const stL   = id => STAGES.find(s=>s.id===normStage(id))?.label||id;
 const stC   = id => STAGES.find(s=>s.id===id)?.color||'#333';
@@ -346,14 +348,14 @@ function renderLineup(){
       +'</div>'
     +'</div>';
   }).join('');
-  document.getElementById('fav-count').textContent=favs.length;
+  document.getElementById('fav-count').textContent=Object.keys(favs).length;
 }
 
 function renderFavs(){
-  document.getElementById('fav-count').textContent=favs.length;
+  document.getElementById('fav-count').textContent=Object.keys(favs).length;
   const info=document.getElementById('fav-info');
   const list=document.getElementById('fav-list');
-  if(!favs.length){info.innerHTML='Noch keine Favoriten. Klicke im <b>Line-Up</b> auf ☆ um Bands zu markieren.';list.innerHTML='';return;}
+  if(!Object.keys(favs).length){info.innerHTML='Noch keine Favoriten. Klicke im <b>Line-Up</b> auf ☆ um Bands zu markieren.';list.innerHTML='';return;}
   const myBands=BANDS.filter(b=>favs.includes(b.name)).sort((a,b)=>(b.hl?1:0)-(a.hl?1:0)||a.name.localeCompare(b.name,'de'));
   const withSc=myBands.filter(b=>SCHED.some(s=>s.name.toLowerCase()===b.name.toLowerCase()));
   info.innerHTML='<b>'+favs.length+'</b> Band'+(favs.length!==1?'s':'')+' gespeichert &nbsp;·&nbsp; <b>'+withSc.length+'</b> mit bekanntem Spielplan &nbsp;·&nbsp; Klicke <b>Zeitplan</b> für die Übersicht.';
@@ -370,12 +372,12 @@ function renderFavs(){
 }
 
 function renderTT(){
-  const myShows=SCHED.filter(s=>favs.some(f=>f.toLowerCase()===s.name.toLowerCase()));
+  const myShows=SCHED.filter(s=>Object.keys(favs).some(f=>f.toLowerCase()===s.name.toLowerCase()));
   const outer=document.getElementById('tt-outer');
   const msg=document.getElementById('tt-msg');
   const cfltBar=document.getElementById('cflt-bar');
   const leg=document.getElementById('legend');
-  if(!favs.length){outer.style.display='none';msg.style.display='';msg.textContent='Noch keine Favoriten. Wähle zuerst Bands im Line-Up aus!';cfltBar.style.display='none';leg.innerHTML='';return;}
+  if(!Object.keys(favs).length){outer.style.display='none';msg.style.display='';msg.textContent='Noch keine Favoriten. Wähle zuerst Bands im Line-Up aus!';cfltBar.style.display='none';leg.innerHTML='';return;}
   if(!myShows.length){outer.style.display='none';msg.style.display='';msg.textContent='Keine deiner Favoriten hat bisher bekannte Spielzeiten.';cfltBar.style.display='none';leg.innerHTML='';return;}
   msg.style.display='none';outer.style.display='';
 
