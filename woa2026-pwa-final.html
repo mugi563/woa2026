@@ -143,21 +143,6 @@ h2.print-title{display:none}
   .nav{gap:.5rem}
   .tabs{flex-wrap:wrap}
 }
-
-/* Vorgemerkt badge */
-.bdg.wl{background:transparent;color:#7ec8e3;border:1px solid #7ec8e3;font-style:normal}
-/* Entdecken grid */
-.disc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border2)}
-.disc-card{background:var(--s1);padding:.8rem 1rem;cursor:pointer;transition:background .15s;display:flex;flex-direction:column;gap:.35rem}
-.disc-card:hover{background:var(--s2)}
-.disc-card.hl{border-left:3px solid var(--red)}
-.disc-card-name{font-size:.95rem;font-weight:700;color:#fff;line-height:1.3}
-/* Vorgemerkt section in Favs */
-.watch-item{background:var(--s1);padding:.65rem .9rem;display:flex;align-items:center;gap:.75rem;border-left:3px solid #7ec8e3}
-.watch-item .fn{font-weight:600;color:#fff}
-.watch-item .fm{font-size:.78rem;color:var(--muted);margin-top:.15rem}
-/* Modal embed */
-.sp-embed{width:100%;border:none;border-radius:4px;display:block}
 </style>
 
 <script>
@@ -230,7 +215,6 @@ self.addEventListener('fetch', e => {
       <button class="tab active" onclick="showView('lineup')">&#9835; Line-Up</button>
       <button class="tab" onclick="showView('favs')">&#9733; Favoriten<span class="fc" id="fav-count">0</span></button>
       <button class="tab" onclick="showView('tt')">&#9776; Zeitplan</button>
-
     </div>
   </div>
 </header>
@@ -281,9 +265,7 @@ self.addEventListener('fetch', e => {
   <div class="tt-outer" id="tt-outer" style="display:none">
     <table class="tt" id="tt-table"></table>
   </div>
-
-
-
+</div>
 
 <script>
 const BANDS  = [{"name": "5th Avenue", "slug": "5th-avenue", "firstTime": false, "badge": "", "hl": false}, {"name": "9mm Headshot", "slug": "9mm-headshot", "firstTime": false, "badge": "", "hl": false}, {"name": "Ad Infinitum", "slug": "ad-infinitum", "firstTime": false, "badge": "", "hl": false}, {"name": "Airbourne", "slug": "airbourne", "firstTime": false, "badge": "", "hl": false}, {"name": "Alcest", "slug": "alcest", "firstTime": false, "badge": "", "hl": false}, {"name": "Alestorm", "slug": "alestorm", "firstTime": false, "badge": "", "hl": false}, {"name": "Alfahanne", "slug": "alfahanne", "firstTime": false, "badge": "", "hl": false}, {"name": "Alien Ant Farm", "slug": "alien-ant-farm", "firstTime": true, "badge": "", "hl": false}, {"name": "Alien Rockin Explosion", "slug": "alien-rockin-explosion", "firstTime": false, "badge": "", "hl": false}, {"name": "Allt", "slug": "allt", "firstTime": true, "badge": "", "hl": false}, {"name": "Anaal Nathrakh", "slug": "anaal-nathrakh", "firstTime": true, "badge": "", "hl": false}, {"name": "Angelus Apatrida", "slug": "angelus-apatrida", "firstTime": false, "badge": "", "hl": false}, {"name": "Animals as Leaders", "slug": "animals-as-leaders", "firstTime": true, "badge": "", "hl": false}, {"name": "Any given Day", "slug": "any-given-day", "firstTime": false, "badge": "", "hl": false}, {"name": "Arch Enemy", "slug": "arch-enemy", "firstTime": false, "badge": "10th time at Wacken Open Air", "hl": false}, {"name": "Arroganz", "slug": "arroganz", "firstTime": true, "badge": "", "hl": false}, {"name": "Asrock", "slug": "asrock", "firstTime": false, "badge": "", "hl": false}, {"name": "Battlecreek", "slug": "battlecreek", "firstTime": true, "badge": "", "hl": false}, {"name": "Bear McCreary", "slug": "bear-mccreary", "firstTime": true, "badge": "", "hl": false}, {"name": "Blaas of Glory", "slug": "blaas-of-glory", "firstTime": false, "badge": "", "hl": false}, {"name": "Black Label Society", "slug": "black-label-society", "firstTime": false, "badge": "", "hl": false}, {"name": "Black Tish", "slug": "black-tish", "firstTime": false, "badge": "", "hl": false}, {"name": "Bleed From Within", "slug": "bleed-from-within-1", "firstTime": false, "badge": "", "hl": false}, {"name": "Blood Command", "slug": "blood-command", "firstTime": true, "badge": "", "hl": false}, {"name": "Blood Fire Death", "slug": "blood-fire-death", "firstTime": true, "badge": "A tribute to Bathory / Germany exclusive", "hl": false}, {"name": "Blood Red Throne", "slug": "blood-red-throne", "firstTime": true, "badge": "\"Altered Genesis\" Set", "hl": false}, {"name": "Broken By The Scream", "slug": "broken-by-the-scream", "firstTime": true, "badge": "", "hl": false}, {"name": "Brunhilde", "slug": "brunhilde", "firstTime": false, "badge": "", "hl": false}, {"name": "Castle Rat", "slug": "castle-rat", "firstTime": true, "badge": "", "hl": false}, {"name": "Chaosbay", "slug": "chaosbay", "firstTime": false, "badge": "", "hl": false}, {"name": "Corrosion of Conformity", "slug": "corrosion-of-conformity", "firstTime": true, "badge": "", "hl": false}, {"name": "Cowgirls From Hell", "slug": "cowgirls-from-hell", "firstTime": true, "badge": "", "hl": false}, {"name": "Craft", "slug": "craft", "firstTime": true, "badge": "", "hl": false}, {"name": "Crematory", "slug": "crematory", "firstTime": false, "badge": "35th Anniversary Show", "hl": false}, {"name": "Crimson Glory", "slug": "crimson-glory", "firstTime": true, "badge": "", "hl": false}, {"name": "Cruachan", "slug": "cruachan", "firstTime": true, "badge": "", "hl": false}, {"name": "Crypt Sermon", "slug": "crypt-sermon", "firstTime": true, "badge": "", "hl": false}, {"name": "Cursed Abyss", "slug": "cursed-abyss", "firstTime": false, "badge": "Founded at Wacken Music Camp", "hl": false}, {"name": "Danko Jones", "slug": "danko-jones", "firstTime": false, "badge": "", "hl": false}, {"name": "Deafheaven", "slug": "deafheaven", "firstTime": true, "badge": "", "hl": false}, {"name": "Def Leppard", "slug": "def-leppard", "firstTime": true, "badge": "", "hl": true}, {"name": "Diabolisches Werk", "slug": "diabolisches-werk", "firstTime": false, "badge": "", "hl": false}, {"name": "Dieter \"Maschine\" Birr", "slug": "dieter-maschine-birr", "firstTime": false, "badge": "", "hl": false}, {"name": "Dirty Shirt", "slug": "dirty-shirt", "firstTime": false, "badge": "", "hl": false}, {"name": "Divlje Jagode", "slug": "divlje-jagode", "firstTime": true, "badge": "", "hl": false}, {"name": "Dritte Wahl", "slug": "dritte-wahl", "firstTime": false, "badge": "", "hl": false}, {"name": "Dubioza Kolektiv", "slug": "dubioza-kolektiv", "firstTime": true, "badge": "", "hl": false}, {"name": "E.N.D.", "slug": "end", "firstTime": true, "badge": "Metal Battle Balkan Regions", "hl": false}, {"name": "Einherjer", "slug": "einherjer", "firstTime": false, "badge": "", "hl": false}, {"name": "Eläkeläiset", "slug": "elaekelaeiset", "firstTime": false, "badge": "", "hl": false}, {"name": "Electric Bassboy", "slug": "electric-bassboy", "firstTime": true, "badge": "Sideproject Electric Callboy", "hl": false}, {"name": "Elvicho", "slug": "elvicho", "firstTime": true, "badge": "", "hl": false}, {"name": "Emperor", "slug": "emperor", "firstTime": false, "badge": "Best-of + Emperor EP Set", "hl": false}, {"name": "Employed To Serve", "slug": "employed-to-serve", "firstTime": false, "badge": "", "hl": false}, {"name": "Europe", "slug": "europe", "firstTime": false, "badge": "", "hl": false}, {"name": "Evil Jared & Krogi", "slug": "evil-jared-krogi", "firstTime": true, "badge": "", "hl": false}, {"name": "Expellow", "slug": "expellow", "firstTime": false, "badge": "Metal Battle Winner 2025", "hl": false}, {"name": "Faun", "slug": "faun", "firstTime": false, "badge": "", "hl": false}, {"name": "Finsterforst", "slug": "finsterforst", "firstTime": false, "badge": "", "hl": false}, {"name": "Firespawn", "slug": "firespawn", "firstTime": true, "badge": "In Memory Of LG Petrov", "hl": false}, {"name": "Fit For An Autopsy", "slug": "fit-for-an-autopsy", "firstTime": false, "badge": "", "hl": false}, {"name": "Focus.", "slug": "focus", "firstTime": false, "badge": "", "hl": false}, {"name": "Force", "slug": "force", "firstTime": true, "badge": "", "hl": false}, {"name": "Future Palace", "slug": "future-palace", "firstTime": false, "badge": "", "hl": false}, {"name": "Given By The Flames", "slug": "given-by-the-flames", "firstTime": true, "badge": "Metal Battle Japan", "hl": false}, {"name": "Grand Magus", "slug": "grand-magus", "firstTime": true, "badge": "", "hl": false}, {"name": "Guilt Trip", "slug": "guilt-trip", "firstTime": true, "badge": "", "hl": false}, {"name": "Gutalax", "slug": "gutalax", "firstTime": true, "badge": "", "hl": false}, {"name": "H-Blockx", "slug": "h-blockx", "firstTime": true, "badge": "", "hl": false}, {"name": "Hackneyed", "slug": "hackneyed", "firstTime": false, "badge": "", "hl": false}, {"name": "Hämatom", "slug": "haematom", "firstTime": false, "badge": "", "hl": false}, {"name": "Hardline", "slug": "hardline", "firstTime": false, "badge": "", "hl": false}, {"name": "Hatebreed", "slug": "hatebreed", "firstTime": false, "badge": "", "hl": false}, {"name": "Heartless Human Harvest", "slug": "heartless-human-harvest", "firstTime": true, "badge": "", "hl": false}, {"name": "Heavysaurus", "slug": "heavysaurus", "firstTime": false, "badge": "", "hl": false}, {"name": "I See Red", "slug": "i-see-red", "firstTime": true, "badge": "Metal Battle Greece", "hl": false}, {"name": "In Flames", "slug": "in-flames", "firstTime": false, "badge": "", "hl": false}, {"name": "Insanity Alert", "slug": "insanity-alert", "firstTime": false, "badge": "", "hl": false}, {"name": "Judas Priest", "slug": "judas-priest", "firstTime": false, "badge": "", "hl": true}, {"name": "Kadavar", "slug": "kadavar", "firstTime": false, "badge": "", "hl": false}, {"name": "Kärbholz", "slug": "kaerbholz", "firstTime": false, "badge": "", "hl": false}, {"name": "Katerfahrt", "slug": "katerfahrt", "firstTime": true, "badge": "", "hl": false}, {"name": "Kim Dracula", "slug": "kim-dracula", "firstTime": true, "badge": "", "hl": false}, {"name": "Kittie", "slug": "kittie", "firstTime": true, "badge": "", "hl": false}, {"name": "Kupfergold", "slug": "kupfergold", "firstTime": false, "badge": "", "hl": false}, {"name": "Lacuna Coil", "slug": "lacuna-coil", "firstTime": false, "badge": "", "hl": false}, {"name": "Lagwagon", "slug": "lagwagon", "firstTime": false, "badge": "", "hl": false}, {"name": "Lamb of God", "slug": "lamb-of", "firstTime": false, "badge": "", "hl": false}, {"name": "Life of Agony", "slug": "life-of-agony", "firstTime": false, "badge": "", "hl": false}, {"name": "Lovebites", "slug": "lovebites", "firstTime": false, "badge": "", "hl": false}, {"name": "Luna Kills", "slug": "luna-kills", "firstTime": true, "badge": "", "hl": false}, {"name": "Mambo Kurt", "slug": "mambo-kurt", "firstTime": false, "badge": "", "hl": false}, {"name": "Manntra", "slug": "manntra", "firstTime": false, "badge": "", "hl": false}, {"name": "Mantar", "slug": "mantar", "firstTime": false, "badge": "", "hl": false}, {"name": "Maschine's Late Night Show", "slug": "maschines-late-night-show", "firstTime": false, "badge": "", "hl": false}, {"name": "Metaklapa", "slug": "metaklapa", "firstTime": false, "badge": "", "hl": false}, {"name": "Midhaven", "slug": "midhaven", "firstTime": true, "badge": "Metal Battle India", "hl": false}, {"name": "Minotaurus", "slug": "minotaurus", "firstTime": true, "badge": "", "hl": false}, {"name": "Misery Index", "slug": "misery-index", "firstTime": true, "badge": "", "hl": false}, {"name": "Misþyrming & Nergal", "slug": "misthyrming-nergal", "firstTime": true, "badge": "Perform Behemoth's \"Sventevith\" Storming Near The Baltic", "hl": false}, {"name": "Mr. Hurley und die Pulveraffen", "slug": "mr-hurley-und-die-pulveraffen", "firstTime": false, "badge": "", "hl": false}, {"name": "Municipal Waste", "slug": "municipal-waste", "firstTime": false, "badge": "", "hl": false}, {"name": "Nevermore", "slug": "nevermore", "firstTime": false, "badge": "", "hl": false}, {"name": "Novelization", "slug": "novelization", "firstTime": true, "badge": "", "hl": false}, {"name": "Of Mice and Men", "slug": "of-mice-and-men", "firstTime": false, "badge": "", "hl": false}, {"name": "Orbit Culture", "slug": "orbit-culture", "firstTime": true, "badge": "", "hl": false}, {"name": "Our Promise", "slug": "our-promise", "firstTime": false, "badge": "", "hl": false}, {"name": "P.O.D.", "slug": "pod", "firstTime": false, "badge": "", "hl": false}, {"name": "Paleface Swiss", "slug": "paleface-swiss", "firstTime": true, "badge": "", "hl": false}, {"name": "Paradise Lost", "slug": "paradise-lost", "firstTime": false, "badge": "", "hl": false}, {"name": "Phantom", "slug": "phantom", "firstTime": true, "badge": "", "hl": false}, {"name": "Pig Destroyer", "slug": "pig-destroyer", "firstTime": true, "badge": "Prowler In The Yard 25th Anniversary Set", "hl": false}, {"name": "Poison The Preacher", "slug": "poison-the-preacher", "firstTime": true, "badge": "", "hl": false}, {"name": "Powerwolf", "slug": "powerwolf", "firstTime": false, "badge": "", "hl": true}, {"name": "Ricky Warwick", "slug": "ricky-warwick", "firstTime": true, "badge": "", "hl": false}, {"name": "Rose Tattoo", "slug": "rose-tattoo", "firstTime": false, "badge": "Farewell Tour", "hl": false}, {"name": "Running Wild", "slug": "running-wild", "firstTime": false, "badge": "", "hl": false}, {"name": "Sabaton", "slug": "sabaton", "firstTime": false, "badge": "", "hl": true}, {"name": "Sacred Steel", "slug": "sacred-steel", "firstTime": true, "badge": "", "hl": false}, {"name": "Sagenbringer", "slug": "sagenbringer", "firstTime": true, "badge": "", "hl": false}, {"name": "Savatage", "slug": "savatage", "firstTime": false, "badge": "", "hl": false}, {"name": "Saviourself", "slug": "saviourself", "firstTime": true, "badge": "", "hl": false}, {"name": "Saxon", "slug": "saxon", "firstTime": false, "badge": "", "hl": false}, {"name": "Sepultura", "slug": "sepultura", "firstTime": false, "badge": "Last German Festival Show", "hl": false}, {"name": "Sinamort", "slug": "sinamort", "firstTime": true, "badge": "Metal Battle Lithuania", "hl": false}, {"name": "Skyline", "slug": "skyline", "firstTime": false, "badge": "", "hl": false}, {"name": "Skynd", "slug": "skynd", "firstTime": false, "badge": "", "hl": false}, {"name": "Speak in Whispers", "slug": "speak-in-whispers", "firstTime": false, "badge": "Metal Battle Cyprus", "hl": false}, {"name": "Spectral Wound", "slug": "spectral-wound", "firstTime": true, "badge": "", "hl": false}, {"name": "Stonem", "slug": "stonem", "firstTime": true, "badge": "", "hl": false}, {"name": "Storm Seeker", "slug": "storm-seeker", "firstTime": false, "badge": "", "hl": false}, {"name": "Subway to Sally", "slug": "subway-to-sally", "firstTime": false, "badge": "", "hl": false}, {"name": "Temple of the Absurd", "slug": "temple-of-the-absurd", "firstTime": false, "badge": "", "hl": false}, {"name": "Ten56.", "slug": "ten56", "firstTime": true, "badge": "", "hl": false}, {"name": "The Butcher Sisters", "slug": "the-butcher-sisters", "firstTime": false, "badge": "", "hl": false}, {"name": "The Gathering", "slug": "the-gathering", "firstTime": false, "badge": "Exclusive Show in Germany in 2026", "hl": false}, {"name": "The Hardkiss", "slug": "the-hardkiss", "firstTime": false, "badge": "", "hl": false}, {"name": "The Haunted", "slug": "the-haunted", "firstTime": false, "badge": "", "hl": false}, {"name": "The Limit", "slug": "the-limit", "firstTime": true, "badge": "", "hl": false}, {"name": "The Other", "slug": "the-other", "firstTime": false, "badge": "", "hl": false}, {"name": "The Troops Of Doom", "slug": "the-troops-of-doom", "firstTime": true, "badge": "", "hl": false}, {"name": "Therapy?", "slug": "therapy", "firstTime": false, "badge": "", "hl": false}, {"name": "Thomas Nicholas Band", "slug": "thomas-nicholas-band", "firstTime": true, "badge": "", "hl": false}, {"name": "Thrown", "slug": "thrown", "firstTime": true, "badge": "", "hl": false}, {"name": "Thundermother", "slug": "thundermother", "firstTime": false, "badge": "", "hl": false}, {"name": "Thy Art Is Murder", "slug": "thy-art-is-murder", "firstTime": false, "badge": "", "hl": false}, {"name": "Triptykon", "slug": "triptykon", "firstTime": true, "badge": "Exclusive Special Best Of Set With Several World Live Premiers", "hl": false}, {"name": "Trold", "slug": "trold", "firstTime": true, "badge": "", "hl": false}, {"name": "Turbonegro", "slug": "turbonegro", "firstTime": false, "badge": "", "hl": false}, {"name": "tuXedoo", "slug": "tuxedoo", "firstTime": false, "badge": "", "hl": false}, {"name": "Uli Jon Roth", "slug": "uli-jon-roth", "firstTime": false, "badge": "50th Anniversary of \"Virgin Killer\" Show feat. Special Guests", "hl": false}, {"name": "Unzucht", "slug": "unzucht", "firstTime": false, "badge": "", "hl": false}, {"name": "Vanir", "slug": "vanir", "firstTime": true, "badge": "", "hl": false}, {"name": "Velvet Rush", "slug": "velvet-rush", "firstTime": true, "badge": "", "hl": false}, {"name": "Vended", "slug": "vended", "firstTime": false, "badge": "", "hl": false}, {"name": "Visions of Atlantis", "slug": "visions-of-atlantis", "firstTime": false, "badge": "", "hl": false}, {"name": "Vogelfrey", "slug": "vogelfrey", "firstTime": false, "badge": "", "hl": false}, {"name": "Vreid", "slug": "vreid", "firstTime": false, "badge": "", "hl": false}, {"name": "Wacken Firefighters", "slug": "wacken-firefighters", "firstTime": false, "badge": "", "hl": false}, {"name": "Wüstenberg", "slug": "wuestenberg", "firstTime": true, "badge": "", "hl": false}, {"name": "Wytch Hazel", "slug": "wytch-hazel", "firstTime": true, "badge": "", "hl": false}, {"name": "Year of the Goat", "slug": "year-of-the-goat", "firstTime": false, "badge": "", "hl": false}, {"name": "Yngwie Malmsteen", "slug": "yngwie-malmsteen", "firstTime": true, "badge": "Greatest Hits Set", "hl": false}, {"name": "Zeltinger Band", "slug": "zeltinger-band", "firstTime": true, "badge": "", "hl": false}];
@@ -307,15 +289,11 @@ const STAGE_ALIAS = {main:"faster", nacken:"wackinger", crusher:"headbangers", s
 const normStage = s => STAGE_ALIAS[s] || s;
 
 let favs = JSON.parse(localStorage.getItem('woa26_favs')||'[]');
-let watchlist = JSON.parse(localStorage.getItem('woa26_watch')||'[]');
 let alpha='all', query='', sortM='az', onlyHL=false;
 
 const save  = () => localStorage.setItem('woa26_favs', JSON.stringify(favs));
 const isFav = n  => favs.includes(n);
 const tog   = n  => { if(isFav(n)) favs=favs.filter(f=>f!==n); else favs.push(n); save(); renderAll(); };
-const saveWatch  = () => localStorage.setItem('woa26_watch', JSON.stringify(watchlist));
-const isWatch    = n  => watchlist.includes(n);
-const togWatch   = n  => { if(isWatch(n)) watchlist=watchlist.filter(w=>w!==n); else { watchlist.push(n); if(isFav(n)){favs=favs.filter(f=>f!==n);save();} } saveWatch(); renderFavs(); ; };
 const m2t   = m  => String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
 const stL   = id => STAGES.find(s=>s.id===normStage(id))?.label||id;
 const stC   = id => STAGES.find(s=>s.id===id)?.color||'#333';
@@ -326,7 +304,7 @@ function showView(v){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
-  const _ti={lineup:0,favs:1,tt:2};if(_ti[v]!==undefined)document.querySelectorAll('.tab')[_ti[v]].classList.add('active');
+  document.querySelectorAll('.tab')[{lineup:0,favs:1,tt:2}[v]].classList.add('active');
   if(v==='tt') renderTT();
   if(v==='favs') renderFavs();
 }
@@ -372,75 +350,25 @@ function renderLineup(){
 }
 
 function renderFavs(){
-  const total=favs.length+watchlist.length;
-  document.getElementById('fav-count').textContent=total;
+  document.getElementById('fav-count').textContent=favs.length;
   const info=document.getElementById('fav-info');
   const list=document.getElementById('fav-list');
-
-  if(!favs.length&&!watchlist.length){
-    info.innerHTML='Noch keine Favoriten. Klicke im <b>Line-Up</b> auf &#9734; oder im <b>Entdecken</b> auf &#128204; Vormerken.';
-    list.innerHTML='';
-    return;
-  }
-
+  if(!favs.length){info.innerHTML='Noch keine Favoriten. Klicke im <b>Line-Up</b> auf ☆ um Bands zu markieren.';list.innerHTML='';return;}
   const myBands=BANDS.filter(b=>favs.includes(b.name)).sort((a,b)=>(b.hl?1:0)-(a.hl?1:0)||a.name.localeCompare(b.name,'de'));
-  const wBands =BANDS.filter(b=>watchlist.includes(b.name)).sort((a,b)=>a.name.localeCompare(b.name,'de'));
-  const withSc =myBands.filter(b=>SCHED.some(s=>s.name.toLowerCase()===b.name.toLowerCase()));
-
-  info.innerHTML='<b>'+favs.length+'</b> Favorit'+(favs.length!==1?'en':'')
-    +(watchlist.length?' &nbsp;&middot;&nbsp; <b>'+watchlist.length+'</b> <span style="color:#7ec8e3">Vorgemerkt</span>':'')
-    +(withSc.length?' &nbsp;&middot;&nbsp; <b>'+withSc.length+'</b> mit Spielplan':'');
-
-  let html='';
-
-  // Vorgemerkt section
-  if(wBands.length){
-    html+='<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#7ec8e3;margin:.9rem 0 .5rem">&#128204; Vorgemerkt ('+wBands.length+')</div>';
-    html+=wBands.map(b=>{
-      const sc=SCHED.find(s=>s.name.toLowerCase()===b.name.toLowerCase());
-      const si=sc?DAYS[sc.day]+' &middot;&nbsp;'+m2t(sc.start)+'&#8211;'+m2t(sc.end)+'&nbsp;&middot;&nbsp;'+stL(sc.stage):'Spielzeit noch nicht bekannt';
-      return '<div class="watch-item" data-wname="'+b.name.replace(/"/g,'&quot;')+'">'
-        +'<div style="font-size:1rem;flex-shrink:0">📌</div>'
-        +'<div style="flex:1;min-width:0">'
-        +  '<div class="fn">'+b.name+' <span class="bdg wl">Vorgemerkt</span></div>'
-        +  '<div class="fm">'+si+'</div>'
-        +'</div>'
-        +'<div style="display:flex;flex-direction:column;gap:.3rem;align-items:flex-end;flex-shrink:0">'
-        +'<button class="btn" style="font-size:.72rem;padding:.28rem .65rem;white-space:nowrap;border-color:var(--amber);color:var(--amber)" data-action="watch2fav" data-bname="'+b.name.replace(/"/g,'&quot;')+'">&#9733; In Zeitplan</button>'
-        +'<button class="rm" style="font-size:.72rem" data-action="rmwatch" data-bname="'+b.name.replace(/"/g,'&quot;')+'">&#10005; Entfernen</button>'
-        +'</div>'
-      +'</div>';
-    }).join('');
-  }
-
-  // Favoriten section
-  if(myBands.length){
-    html+='<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:.9rem 0 .5rem">&#9733; Favoriten ('+myBands.length+')</div>';
-    html+=myBands.map(b=>{
-      const sc=SCHED.find(s=>s.name.toLowerCase()===b.name.toLowerCase());
-      const si=sc?DAYS[sc.day]+' &middot;&nbsp;'+m2t(sc.start)+'&#8211;'+m2t(sc.end)+'&nbsp;&middot;&nbsp;'+stL(sc.stage):'Spielzeit noch nicht bekannt';
-      return '<div class="fav-item'+(b.hl?' hl':'')+'" data-bname="'+b.name.replace(/"/g,'&quot;')+'">'
-        +'<div style="font-size:1.1rem;flex-shrink:0">'+(b.hl?'&#9889;':'&#9654;')+'</div>'
-        +'<div style="flex:1;min-width:0"><div class="fn">'+(b.hl?'<span style="color:#ff4444">'+b.name+'</span>':b.name)+'</div><div class="fm">'+si+'</div></div>'
-        +'<button class="rm" data-action="rmfav" data-bname="'+b.name.replace(/"/g,'&quot;')+'">Entfernen</button>'
-      +'</div>';
-    }).join('');
-  }
-
-  list.innerHTML=html;
-
-  // Event delegation — no inline onclick escaping needed
-  list.onclick=function(e){
-    const btn=e.target.closest('[data-action]');
-    if(!btn) return;
-    e.stopPropagation();
-    const name=btn.dataset.bname;
-    const action=btn.dataset.action;
-    if(action==='rmfav'){ tog(name); }
-    else if(action==='rmwatch'){ togWatch(name); }
-    else if(action==='watch2fav'){ watchlist=watchlist.filter(w=>w!==name); saveWatch(); favs.push(name); save(); renderFavs(); renderAll(); }
-  };
+  const withSc=myBands.filter(b=>SCHED.some(s=>s.name.toLowerCase()===b.name.toLowerCase()));
+  info.innerHTML='<b>'+favs.length+'</b> Band'+(favs.length!==1?'s':'')+' gespeichert &nbsp;·&nbsp; <b>'+withSc.length+'</b> mit bekanntem Spielplan &nbsp;·&nbsp; Klicke <b>Zeitplan</b> für die Übersicht.';
+  list.innerHTML=myBands.map(b=>{
+    const sc=SCHED.find(s=>s.name.toLowerCase()===b.name.toLowerCase());
+    const si=sc?DAYS[sc.day]+' &nbsp;·&nbsp; '+m2t(sc.start)+'–'+m2t(sc.end)+' &nbsp;·&nbsp; '+stL(sc.stage):'Spielzeit noch nicht bekannt';
+    const en=escN(b.name);
+    return '<div class="fav-item'+(b.hl?' hl':'')+'">'
+      +'<div style="font-size:1.1rem;flex-shrink:0">'+(b.hl?'⚡':'▶')+'</div>'
+      +'<div><div class="fn">'+(b.hl?'<span style="color:#ff4444">'+b.name+'</span>':b.name)+'</div><div class="fm">'+si+'</div></div>'
+      +'<button class="rm" onclick="event.stopPropagation();tog(\''+en+'\')">Entfernen</button>'
+    +'</div>';
+  }).join('');
 }
+
 function renderTT(){
   const myShows=SCHED.filter(s=>favs.some(f=>f.toLowerCase()===s.name.toLowerCase()));
   const outer=document.getElementById('tt-outer');
@@ -515,13 +443,76 @@ document.getElementById('sort-sel').addEventListener('change',e=>{sortM=e.target
 function clearFilters(){query='';alpha='all';sortM='az';onlyHL=false;document.getElementById('search').value='';document.getElementById('sort-sel').value='az';document.getElementById('btn-hl').classList.remove('on');buildAlpha();renderLineup();}
 function renderAll(){renderLineup();const av=document.querySelector('.view.active')?.id;if(av==='view-favs')renderFavs();if(av==='view-tt')renderTT();}
 
-// ══════════════════════════════════════════════════════════════
-// ENTDECKEN – komplett neu
-// ══════════════════════════════════════════════════════════════
+buildAlpha(); renderLineup();
+</script>
 
-window.addEventListener('load',()=>{
-  setTimeout(()=>tryLiveUpdate(false),1200);
-  ;
+<!-- SW moved to inline blob -->
+<script>
+
+// Live update: fetch wacken.com band list on startup via CORS proxy
+async function tryLiveUpdate(manual=false){
+  const statusEl = document.getElementById('live-status');
+  const btnEl = document.getElementById('btn-refresh');
+  statusEl.textContent = '⏳ Verbinde mit wacken.com…';
+  statusEl.style.color = '#f49600';
+  if(btnEl) btnEl.disabled = true;
+  try {
+    // Direct call to Wacken's official JSON API — no proxy needed
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    let res;
+    try {
+      res = await fetch('https://www.wacken.com/fileadmin/Json/bandlist-concert.json', {
+        signal: controller.signal,
+        headers: {'Accept':'application/json'}
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const names = data.map(b => b.artist?.title || b.title).filter(Boolean);
+    const roActive = data.some(b => b.festival?.runningOrderActive);
+    if(names.length > 10){
+      const prevCount = parseInt(localStorage.getItem('woa26_live_count')||'0');
+      const diff = names.length - prevCount;
+      const ts = new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+      let msg = '🟢 Live · ' + names.length + ' Bands · Stand: ' + ts;
+      if(manual && diff > 0)  msg += ' · ⚡ +'+diff+' neue Bands!';
+      if(manual && diff === 0 && prevCount > 0) msg += ' · Keine Änderungen';
+      if(roActive) msg += ' · Running Order aktiv!';
+      statusEl.textContent = msg;
+      statusEl.style.color = roActive ? '#f49600' : '#50c878';
+      localStorage.setItem('woa26_live_ts', Date.now());
+      localStorage.setItem('woa26_live_count', names.length);
+    } else {
+      throw new Error('Zu wenige Bands gefunden');
+    }
+  } catch(e){
+    const lastTs = localStorage.getItem('woa26_live_ts');
+    const lastCount = localStorage.getItem('woa26_live_count');
+    const errMsg = e?.message ? ' ['+e.message+']' : '';
+    if(lastTs){
+      const mins = Math.round((Date.now()-parseInt(lastTs))/60000);
+      const h = Math.floor(mins/60), m = mins%60;
+      const ago = h>0 ? h+'h '+m+'min' : m+'min';
+      statusEl.textContent = '🟡 Keine Verbindung · Zuletzt: vor '+ago+' ('+lastCount+' Bands)'+errMsg;
+    } else {
+      statusEl.textContent = '⚪ Keine Verbindung · Eingebettete Daten ('+BANDS.length+' Bands)'+errMsg;
+    }
+    statusEl.style.color = '#9a9a9a';
+    console.warn('Live update failed:', e);
+  }
+  if(btnEl){ btnEl.disabled = false; }
+}
+
+function manualUpdate(){
+  tryLiveUpdate(true);
+}
+
+// Run on load
+window.addEventListener('load', ()=>{
+  setTimeout(()=>tryLiveUpdate(false), 1200);
 });
 </script>
 </body>
