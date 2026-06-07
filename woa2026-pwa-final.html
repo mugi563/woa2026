@@ -337,7 +337,7 @@ function renderLineup(){
   const q=query.toLowerCase();
   if(q) arr=arr.filter(b=>b.name.toLowerCase().includes(q)||b.badge.toLowerCase().includes(q));
   if(alpha!=='all') arr=arr.filter(b=>b.name[0]?.toUpperCase()===alpha);
-    if(onlyHL) arr=arr.filter(b=>b.hl);
+  if(onlyHL) arr=arr.filter(b=>b.hl);
   if(sortM==='az') arr.sort((a,b)=>a.name.localeCompare(b.name,'de'));
   else if(sortM==='za') arr.sort((a,b)=>b.name.localeCompare(a.name,'de'));
   else if(sortM==='hl') arr.sort((a,b)=>(b.hl?1:0)-(a.hl?1:0)||a.name.localeCompare(b.name,'de'));
@@ -345,12 +345,13 @@ function renderLineup(){
 
   document.getElementById('lu-empty').style.display=arr.length?'none':'';
   document.getElementById('band-grid').innerHTML=arr.map(b=>{
-    const fav=isFav(b.name);
+    const fav=getFav(b.name);
     const en=escN(b.name);
     const hlC=b.hl?' hl':'';
     const favC=fav?' fav':'';
+    const favTxt=fav?('★ '+favLabel(fav.type)):'☆';
     return '<div class="bcard'+hlC+favC+'" onclick="tog(\''+en+'\')" title="'+(fav?'Typ ändern/entfernen':'Als Favorit markieren')+'">'
-      +'<span class="star">'+(fav?'★':'☆')+'</span>'
+      +'<span class="star">'+favTxt+'</span>'
       +'<div class="binfo">'
         +'<div class="bname">'+b.name+'</div>'
         +'<div class="bdgs">'
@@ -362,6 +363,7 @@ function renderLineup(){
   }).join('');
   document.getElementById('fav-count').textContent=favs.length;
 }
+
 
 function renderFavs(){
   document.getElementById('fav-count').textContent=favs.length;
