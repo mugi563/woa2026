@@ -291,23 +291,16 @@ const normStage = s => STAGE_ALIAS[s] || s;
 let favs = (JSON.parse(localStorage.getItem('woa26_favs')||'[]')||[]).map(f=>typeof f==='string'?{name:f,type:'must'}:f);
 let alpha='all', query='', sortM='az', onlyHL=false;
 
-const save  = () => localStorage.setItem('woa26_favs', JSON.stringify(favs));
-const getFav = n  => favs.find(f => f.name === n);
-const isFav  = n  => !!getFav(n);
+const save = () => localStorage.setItem('woa26_favs', JSON.stringify(favs));
+const getFav = n => favs.find(f => f.name === n);
+const isFav = n => !!getFav(n);
 const favLabel = t => t === 'must' ? 'Muss ich sehen' : 'Lückenfüller';
-const tog   = n  => {
-  const type = prompt('Favoriten-Typ wählen:
-1 = Muss ich sehen
-2 = Lückenfüller', isFav(n) ? (getFav(n).type === 'must' ? '1' : '2') : '1');
-  if(type === null) return;
-  const t = type.trim().toLowerCase();
-  if(t === 'x' || t === '0' || t === 'entfernen') return removeFav(n);
-  const mapped = (t === '2' || t.startsWith('l') || t === 'fill') ? 'fill' : 'must';
-  const idx = favs.findIndex(f => f.name === n);
-  if(idx >= 0) favs[idx] = {name:n, type:mapped}; else favs.push({name:n, type:mapped});
-  save(); renderAll();
-};
 const removeFav = n => { favs = favs.filter(f => f.name !== n); save(); renderAll(); };
+const setFav = (n, type) => { const idx = favs.findIndex(f => f.name === n); const obj = {name:n, type:type==='fill'?'fill':'must'}; if(idx>=0) favs[idx]=obj; else favs.push(obj); save(); renderAll(); };
+const tog = n => { const cur = getFav(n); const t = prompt('Favoriten-Typ wählen:
+1 = Muss ich sehen
+2 = Lückenfüller
+0 = Entfernen', cur ? (cur.type === 'must' ? '1' : '2') : '1'); if(t === null) return; const x = String(t).trim().toLowerCase(); if(x === '0' || x === 'x' || x === 'entfernen') return removeFav(n); setFav(n, (x === '2' || x.startsWith('l') || x === 'fill') ? 'fill' : 'must'); };
 const m2t   = m  => String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
 const stL   = id => STAGES.find(s=>s.id===normStage(id))?.label||id;
 const stC   = id => STAGES.find(s=>s.id===id)?.color||'#333';
@@ -343,26 +336,53 @@ function renderLineup(){
   else if(sortM==='hl') arr.sort((a,b)=>(b.hl?1:0)-(a.hl?1:0)||a.name.localeCompare(b.name,'de'));
   else arr.sort((a,b)=>a.name.localeCompare(b.name,'de'));
 
-  document.getElementById('lu-empty').style.display=arr.length?'none':'';
-  document.getElementById('band-grid').innerHTML=arr.map(b=>{
-    const fav=getFav(b.name);
-    const en=escN(b.name);
-    const hlC=b.hl?' hl':'';
-    const favC=fav?' fav':'';
-    const favTxt=fav?('★ '+favLabel(fav.type)):'☆';
-    return '<div class="bcard'+hlC+favC+'" onclick="tog(\''+en+'\')" title="'+(fav?'Typ ändern/entfernen':'Als Favorit markieren')+'">'
-      +'<span class="star">'+favTxt+'</span>'
+  const grid = document.getElementById('band-grid');
+  const empty = document.getElementById('lu-empty');
+  if(!grid || !empty){ return; }
+  empty.style.display=arr.length ? 'none' : '';
+  grid.innerHTML = arr.map(b=>{
+    const fav = getFav(b.name);
+    const en = escN(b.name);
+    const hlC = b.hl ? ' hl' : '';
+    const favC = fav ? ' fav' : '';
+    const star = fav ? ('★ ' + favLabel(fav.type)) : '☆';
+    return '<div class="bcard'+hlC+favC+'" onclick="tog(\''+en+'\')" title="'+(fav ? 'Typ ändern/entfernen' : 'Als Favorit markieren')+'">'
+      +'<span class="star">'+star+'</span>'
       +'<div class="binfo">'
         +'<div class="bname">'+b.name+'</div>'
         +'<div class="bdgs">'
-          +(b.hl?'<span class="bdg hl">⚡ Headliner</span>':'')
-          +(b.badge?'<span class="bdg sp">'+b.badge+'</span>':'')
+          +(b.hl ? '<span class="bdg hl">⚡ Headliner</span>' : '')
+          +(b.badge ? '<span class="bdg sp">'+b.badge+'</span>' : '')
         +'</div>'
       +'</div>'
     +'</div>';
   }).join('');
-  document.getElementById('fav-count').textContent=favs.length;
+  const fc = document.getElementById('fav-count');
+  if(fc) fc.textContent = favs.length;
 }
+
+function renderFavs(){
+  const fc = document.getElementById('fav-count'); if(fc) fc.textContent = favs.length;
+  const info=document.getElementById('fav-info');
+  const list=document.getElementById('fav-list');
+  if(!info || !list) return;
+  if(!favs.length){info.innerHTML='Noch keine Favoriten. Klicke im <b>Line-Up</b> auf ☆ um Bands zu markieren.'; list.innerHTML=''; return;}
+  const myBands=BANDS.filter(b=>favs.some(f=>f.name===b.name)).sort((a,b)=>(b.hl?1:0)-(a.hl?1:0)||a.name.localeCompare(b.name,'de'));
+  const withSc=myBands.filter(b=>SCHED.some(s=>s.name.toLowerCase()===b.name.toLowerCase()));
+  info.innerHTML='<b>'+favs.length+'</b> Favoriten gespeichert &nbsp;·&nbsp; <b>'+withSc.length+'</b> mit bekanntem Spielplan &nbsp;·&nbsp; Klicke <b>Zeitplan</b> für die Übersicht.';
+  list.innerHTML=myBands.map(b=>{
+    const fav=getFav(b.name);
+    const sc=SCHED.find(s=>s.name.toLowerCase()===b.name.toLowerCase());
+    const si=sc ? DAYS[sc.day]+' &nbsp;·&nbsp; '+m2t(sc.start)+'–'+m2t(sc.end)+' &nbsp;·&nbsp; '+stL(sc.stage) : 'Spielzeit noch nicht bekannt';
+    const en=escN(b.name);
+    return '<div class="fav-item'+(b.hl?' hl':'')+'">'
+      +'<div style="font-size:1.1rem;flex-shrink:0">'+(fav?.type==='must'?'⚡':'⏳')+'</div>'
+      +'<div><div class="fn">'+(fav?.type==='must'?'<span style="color:#ff4444">'+b.name+'</span>':b.name)+'</div><div class="fm">'+favLabel(fav?.type)+' · '+si+'</div></div>'
+      +'<button class="rm" onclick="event.stopPropagation();removeFav(\''+en+'\')">Entfernen</button>'
+    +'</div>';
+  }).join('');
+}
+
 
 
 function renderFavs(){
